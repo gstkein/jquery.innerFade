@@ -56,14 +56,20 @@
 				// Establish Cancel Handler
 				if ($fade_object.settings.cancelLink) { $.bindCancel($fade_object); };
 
-				// Set outer container as relative, and use the height that's set and add the running class
-				$($fade_object.container).css({'position': 'relative'}).addClass($fade_object.settings.runningClass);
+				// Set outer container as absolute but mantaining it's position, use the height that's set on a newly created div to mantain structire
+				// and add the running class
+				var containerPosition = $($fade_object.container).offset();
+				var containerFiller = $('<div></div>');
+				$($fade_object.container).css({'position': 'absolute'}).css(containerPosition).addClass($fade_object.settings.runningClass);
 				if ($fade_object.settings.containerHeight == 'auto') {
 					height = $($fade_object.elements).filter(':first').height();
 					$($fade_object.container).css({'height': height + 'px'});
+					containerFiller.css({'height': height + 'px'});
 				} else {
 					$($fade_object.container).css({'height': $fade_object.settings.containerHeight});
+					containerFiller.css({'height': $fade_object.settings.containerHeight});
 				};
+				$($fade_object.container).after(containerFiller);
 
 				// Build the Index if one is specified
 				if ($fade_object.settings.indexContainer) {				
